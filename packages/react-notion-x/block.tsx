@@ -1,28 +1,29 @@
 import * as React from 'react';
-import {
-  getBlockIcon,
-  getTextContent,
-  getPageTableOfContents,
-  getBlockParentPage,
-  uuidToId,
-  getBlockCollectionId,
-} from 'notion-utils';
-import * as types from 'notion-types';
 
+import * as types from 'notion-types';
+import {
+  getBlockCollectionId,
+  getBlockIcon,
+  getBlockParentPage,
+  getPageTableOfContents,
+  getTextContent,
+  uuidToId,
+} from 'notion-utils';
+
+import { AssetWrapper } from './components/asset-wrapper';
+import { Audio } from './components/audio';
+import { EOI } from './components/eoi';
+import { File } from './components/file';
+import { GoogleDrive } from './components/google-drive';
+import { LazyImage } from './components/lazy-image';
+import { PageAside } from './components/page-aside';
 import { PageIcon } from './components/page-icon';
 import { PageTitle } from './components/page-title';
-import { PageAside } from './components/page-aside';
-import { LinkIcon } from './icons/link-icon';
-import { GoogleDrive } from './components/google-drive';
-import { Audio } from './components/audio';
-import { File } from './components/file';
-import { LazyImage } from './components/lazy-image';
-import { useNotionContext } from './context';
-import { cs, getListNumber, isUrl } from './utils';
-import { Text } from './components/text';
 import { SyncPointerBlock } from './components/sync-pointer-block';
-import { AssetWrapper } from './components/asset-wrapper';
-import { EOI } from './components/eoi';
+import { Text } from './components/text';
+import { useNotionContext } from './context';
+import { LinkIcon } from './icons/link-icon';
+import { cs, getListNumber, isUrl } from './utils';
 
 interface BlockProps {
   block: types.Block;
@@ -134,14 +135,20 @@ export const Block: React.FC<BlockProps> = props => {
 
           const toc = getPageTableOfContents(block as types.PageBlock, recordMap);
 
-          const isBlogPost = block?.type === 'page' && block?.parent_table === 'collection';
-
           const hasToc = showTableOfContents && toc.length >= minTableOfContentsItems;
           const hasAside = (hasToc || pageAside) && !page_full_width;
           const hasPageCover = pageCover || page_cover;
 
           return (
-            <div className={cs('notion', 'notion-app', blockId, className)}>
+            <div
+              className={cs(
+                'notion',
+                'notion-app',
+                darkMode ? 'dark-mode' : 'light-mode',
+                blockId,
+                className,
+              )}
+            >
               <div className="notion-viewport" />
 
               <div className="notion-frame">
@@ -195,13 +202,13 @@ export const Block: React.FC<BlockProps> = props => {
                       <div
                         className={cs(
                           'notion-page-content',
-                          isBlogPost && hasAside && 'notion-page-content-has-aside',
-                          isBlogPost && hasToc && 'notion-page-content-has-toc',
+                          hasAside && 'notion-page-content-has-aside',
+                          hasToc && 'notion-page-content-has-toc',
                         )}
                       >
                         <article className="notion-page-content-inner">{children}</article>
 
-                        {isBlogPost && hasAside && (
+                        {hasAside && (
                           <PageAside
                             toc={toc}
                             activeSection={activeSection}
@@ -324,7 +331,7 @@ export const Block: React.FC<BlockProps> = props => {
           </span>
         </span>
       );
-      let headerBlock;
+      let headerBlock = null;
 
       //page title takes the h1 so all header blocks are greater
       if (isH1) {
@@ -501,7 +508,10 @@ export const Block: React.FC<BlockProps> = props => {
 
       return (
         <blockquote className={cs('notion-quote', blockColor && `notion-${blockColor}`, blockId)}>
-          <Text value={block.properties.title} block={block} />
+          <div>
+            <Text value={block.properties.title} block={block} />
+          </div>
+          {children}
         </blockquote>
       );
     }
@@ -513,21 +523,12 @@ export const Block: React.FC<BlockProps> = props => {
       if (components.Callout) {
         return <components.Callout block={block} className={blockId} />;
       } else {
-        const status = {
-          '⚠️': 'warning',
-          '🚧': 'warning',
-          '🔴': 'error',
-          '🛑': 'error',
-          '💡': 'info',
-        };
-
         return (
           <div
             className={cs(
               'notion-callout',
               block.format?.block_color && `notion-${block.format?.block_color}_co`,
               blockId,
-              status[block.format.page_icon],
             )}
           >
             <PageIcon block={block} />
@@ -687,6 +688,7 @@ export const Block: React.FC<BlockProps> = props => {
       const blockPointerId = block?.format?.alias_pointer?.id;
       const linkedBlock = recordMap.block[blockPointerId]?.value;
       if (!linkedBlock) {
+        console.log('"alias" missing block', blockPointerId);
         return null;
       }
 
@@ -702,24 +704,29 @@ export const Block: React.FC<BlockProps> = props => {
 
     case 'table':
       return (
-        <div className="notion-simple-table-wrap">
-          <table className={cs('notion-simple-table', blockId)}>
-            <tbody>{children}</tbody>
-          </table>
-        </div>
+        <table className={cs('notion-simple-table', blockId)}>
+          <tbody>{children}</tbody>
+        </table>
       );
 
     case 'table_row': {
       const tableBlock = recordMap.block[block.parent_id]?.value as types.TableBlock;
       const order = tableBlock.format?.table_block_column_order;
       const formatMap = tableBlock.format?.table_block_column_format;
+      const backgroundColor = block.format?.block_color;
 
       if (!tableBlock || !order) {
         return null;
       }
 
       return (
-        <tr className={cs('notion-simple-table-row', blockId)}>
+        <tr
+          className={cs(
+            'notion-simple-table-row',
+            backgroundColor && `notion-${backgroundColor}`,
+            blockId,
+          )}
+        >
           {order.map(column => {
             const color = formatMap?.[column]?.color;
 
