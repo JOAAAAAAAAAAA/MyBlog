@@ -10,7 +10,7 @@ export default siteConfig({
 
   // basic site info (required)
   name: 'my blog',
-  domain: 'blfdfsev.com',
+  domain: 'blog.2skydev.com',
   author: 'Minjee Kim',
 
   // open graph metadata (optional)
@@ -53,10 +53,9 @@ export default siteConfig({
   navigationLinks: [
     {
       title: 'About me',
-      pageId: '52f5e0a4e356479aa84a77df2bea9adf',
+      pageId: '6fb55d797eba4a81939381eb52c7d2d5',
     },
   ],
-
   // -------- custom configs (2skydev) -------------
 
   // date-fns format string
