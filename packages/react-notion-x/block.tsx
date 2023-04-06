@@ -134,10 +134,10 @@ export const Block: React.FC<BlockProps> = props => {
 
           const toc = getPageTableOfContents(block as types.PageBlock, recordMap);
 
-          const isBlogPost = block?.type === 'page' && block?.parent_table === 'collection';
+          // const isBlogPost = block?.type === 'page' && block?.parent_table === 'collection';
 
           const hasToc = showTableOfContents && toc.length >= minTableOfContentsItems;
-          const hasAside = (hasToc || pageAside) && !page_full_width;
+          const hasAside = hasToc && !page_full_width;
           const hasPageCover = pageCover || page_cover;
 
           return (
@@ -195,13 +195,13 @@ export const Block: React.FC<BlockProps> = props => {
                       <div
                         className={cs(
                           'notion-page-content',
-                          isBlogPost && hasAside && 'notion-page-content-has-aside',
-                          isBlogPost && hasToc && 'notion-page-content-has-toc',
+                          hasAside && 'notion-page-content-has-aside',
+                          hasToc && 'notion-page-content-has-toc',
                         )}
                       >
                         <article className="notion-page-content-inner">{children}</article>
 
-                        {isBlogPost && hasAside && (
+                        {hasAside && (
                           <PageAside
                             toc={toc}
                             activeSection={activeSection}
