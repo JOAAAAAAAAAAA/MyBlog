@@ -175,12 +175,13 @@
 
   align-self: flex-start;
   flex: 1;
-
-  display: none;
+  /* display: none; */
   flex-direction: column;
   align-items: center;
 }
-
+.scroll-to-top {
+  display: none;
+}
 .notion-aside-table-of-contents {
   display: flex;
   flex-direction: column;
@@ -711,7 +712,7 @@ svg.notion-page-icon {
   transition: background 120ms ease-in 0s;
 }
 
-.notion-page-link:hover {
+.notion-list-body > a:hover {
   background: var(--bg-color-0);
 }
 
@@ -1138,6 +1139,10 @@ svg.notion-page-icon {
   padding: 4px 2px;
   white-space: nowrap;
   overflow: hidden;
+}
+
+.notion-collection-header-empty {
+  height: calc(30px - 0.5em);
 }
 
 .notion-collection-header-title {
@@ -1571,8 +1576,9 @@ svg.notion-page-icon {
 }
 
 .notion-list-item-property {
-  /* display: flex;
-  align-items: center; */
+  display: flex;
+  align-items: center;
+  /* 왜 주석처리 되어 있었던걸까..? 생성일 가운데 정렬 */
   margin-left: 14px;
   font-size: 14px;
 }

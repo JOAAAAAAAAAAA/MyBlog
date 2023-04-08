@@ -134,11 +134,15 @@ export const Block: React.FC<BlockProps> = props => {
 
           const toc = getPageTableOfContents(block as types.PageBlock, recordMap);
 
-          const isBlogPost = block?.type === 'page' && block?.parent_table === 'collection';
+          // const isBlogPost = block?.type === 'page' && block?.parent_table === 'collection';
 
           const hasToc = showTableOfContents && toc.length >= minTableOfContentsItems;
-          const hasAside = (hasToc || pageAside) && !page_full_width;
+          const hasAside = hasToc && !page_full_width;
           const hasPageCover = pageCover || page_cover;
+
+          const scrollTop = () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          };
 
           return (
             <div className={cs('notion', 'notion-app', blockId, className)}>
@@ -195,13 +199,13 @@ export const Block: React.FC<BlockProps> = props => {
                       <div
                         className={cs(
                           'notion-page-content',
-                          isBlogPost && hasAside && 'notion-page-content-has-aside',
-                          isBlogPost && hasToc && 'notion-page-content-has-toc',
+                          hasAside && 'notion-page-content-has-aside',
+                          hasToc && 'notion-page-content-has-toc',
                         )}
                       >
                         <article className="notion-page-content-inner">{children}</article>
 
-                        {isBlogPost && hasAside && (
+                        {hasAside && (
                           <PageAside
                             toc={toc}
                             activeSection={activeSection}
@@ -213,6 +217,17 @@ export const Block: React.FC<BlockProps> = props => {
                         )}
                       </div>
                     )}
+
+                    <button
+                      onClick={() => {
+                        scrollTop();
+                      }}
+                      className="scroll-to-top"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <polyline points="18 15 12 9 6 15"></polyline>
+                      </svg>
+                    </button>
 
                     {pageFooter}
                   </main>
