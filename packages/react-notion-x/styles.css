@@ -1141,6 +1141,10 @@ svg.notion-page-icon {
   overflow: hidden;
 }
 
+.notion-collection-header-empty {
+  height: calc(30px - 0.5em);
+}
+
 .notion-collection-header-title {
   display: inline-flex;
   align-items: center;
