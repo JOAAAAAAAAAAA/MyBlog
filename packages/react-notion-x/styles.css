@@ -179,31 +179,9 @@
   flex-direction: column;
   align-items: center;
 }
-
-/* 1400미만에는 목차처럼 사용 */
-@media (max-width: 1400px) {
-  .notion-aside {
-    position: static;
-    margin: 0 0 100px 0 !important;
-  }
-
-  .notion-page-content-inner {
-    order: 1;
-  }
-  .notion-contentPosition .item {
-    ::before {
-      display: none;
-    }
-    .activeLine {
-      display: none;
-    }
-    .text {
-      opacity: 0.7 !important;
-      transform: translateX(0px) !important;
-    }
-  }
+.scroll-to-top {
+  display: none;
 }
-
 .notion-aside-table-of-contents {
   display: flex;
   flex-direction: column;
