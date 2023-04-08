@@ -10,7 +10,7 @@ export default siteConfig({
 
   // basic site info (required)
   name: 'my blog',
-  domain: 'blog.2skydev.com',
+  domain: 'my-blog-hazel-kappa.vercel.app',
   author: 'Minjee Kim',
 
   // open graph metadata (optional)
