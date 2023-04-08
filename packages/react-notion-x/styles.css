@@ -712,7 +712,7 @@ svg.notion-page-icon {
   transition: background 120ms ease-in 0s;
 }
 
-.notion-page-link:hover {
+.notion-list-body > a:hover {
   background: var(--bg-color-0);
 }
 
@@ -1572,8 +1572,8 @@ svg.notion-page-icon {
 }
 
 .notion-list-item-property {
-  /* display: flex;
-  align-items: center; */
+  display: flex;
+  align-items: center;
   margin-left: 14px;
   font-size: 14px;
 }
