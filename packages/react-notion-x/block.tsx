@@ -140,7 +140,6 @@ export const Block: React.FC<BlockProps> = props => {
           const hasAside = hasToc && !page_full_width;
           const hasPageCover = pageCover || page_cover;
 
-          // i want to add scroll to top button
           const scrollTop = () => {
             window.scrollTo({ top: 0, behavior: 'smooth' });
           };

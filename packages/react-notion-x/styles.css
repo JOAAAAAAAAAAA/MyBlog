@@ -1574,6 +1574,7 @@ svg.notion-page-icon {
 .notion-list-item-property {
   display: flex;
   align-items: center;
+  /* 왜 주석처리 되어 있었던걸까..? 생성일 가운데 정렬 */
   margin-left: 14px;
   font-size: 14px;
 }
